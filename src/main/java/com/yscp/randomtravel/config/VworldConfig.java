@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class VworldConfig {
-
     @Value("${vworld.key}")
     private String key;
+    @Value("${vworld.uri.sigungu}")
+    private String sigunguUri;
 }
