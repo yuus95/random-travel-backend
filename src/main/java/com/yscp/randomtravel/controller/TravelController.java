@@ -1,10 +1,9 @@
 package com.yscp.randomtravel.controller;
 
-import com.yscp.randomtravel.domain.request.TravelRequestDto;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/random-travel")
@@ -16,8 +15,7 @@ public class TravelController {
     }
 
     @GetMapping
-    public String test2(@ModelAttribute  TravelRequestDto requestDto) {
-        System.out.println(requestDto.toString());
+    public String test2() {
         return "Hello World";
     }
 }

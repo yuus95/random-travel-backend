@@ -3,6 +3,8 @@ package com.yscp.randomtravel.utill;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +12,13 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Component
+@Setter
+@Getter
 public class JwtUtil {
 
     @Value("${jwt.key}")
     private String jwtKey;
 
-    public JwtUtil(String jwtKey) {
-        this.jwtKey = jwtKey;
-    }
 
     public String createToken(String username) {
         return Jwts.builder()
@@ -43,4 +44,18 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public Boolean validateToken(String token, String username) {
+        final String extractedUsername = extractUsername(token);
+        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
 }
