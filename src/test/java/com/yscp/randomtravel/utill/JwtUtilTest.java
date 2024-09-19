@@ -33,6 +33,7 @@ class JwtUtilTest {
         String token = jwtUtil.createToken(username);
 
         Assertions.assertThat(jwtUtil.extractClaim(token, Claims::getSubject ));
-
     }
+
+
 }

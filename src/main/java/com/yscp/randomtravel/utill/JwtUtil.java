@@ -15,10 +15,11 @@ import java.util.function.Function;
 @Setter
 @Getter
 public class JwtUtil {
-
-    @Value("${jwt.key}")
     private String jwtKey;
 
+    public JwtUtil(@Value("${jwt.key}") String jwtKey) {
+        this.jwtKey = jwtKey;
+    }
 
     public String createToken(String username) {
         return Jwts.builder()
