@@ -1,5 +1,6 @@
 package com.yscp.randomtravel.config.filter;
 
+import com.yscp.randomtravel.exception.CustomAuthenticationException;
 import com.yscp.randomtravel.utill.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,10 +34,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null) {
+            if (authorizationHeader.startsWith("Bearer ")) {
+                throw new CustomAuthenticationException("Missing or invalid Authorization header");
+            }
             jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
         }
+
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

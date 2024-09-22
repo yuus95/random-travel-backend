@@ -26,6 +26,8 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     CorsConfigurationSource corsConfigurationSource() {
         return request -> {
@@ -48,6 +50,11 @@ public class SecurityConfig {
                         auth.requestMatchers("/random-travel/login").permitAll()
                                 .requestMatchers("/random-travel/signup").permitAll()
                                 .requestMatchers("/random-travel/**").authenticated());
+
+                httpSecurity.exceptionHandling(exception ->
+                        exception
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler));
 
         httpSecurity.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
