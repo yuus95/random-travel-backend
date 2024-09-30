@@ -2,10 +2,8 @@ package com.yscp.randomtravel.controller;
 
 import com.yscp.randomtravel.domain.request.travel.RandomTravelItemResponse;
 import com.yscp.randomtravel.domain.request.travel.RandomTravelResponseDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.yscp.randomtravel.domain.response.RandomTravelCountResponseDto;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +18,25 @@ public class TravelController {
     }
 
     @GetMapping
-    public RandomTravelResponseDto fetchRandomTravelResponseDto() {
+    public RandomTravelResponseDto fetchRandomTravelResponseDto(@RequestParam Integer page, @RequestParam Integer limit) {
         List<RandomTravelItemResponse> items = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        Integer customPage = getPage(page);
+        for (int i = (customPage - 1) * limit; i < customPage * limit; i++) {
             items.add(new RandomTravelItemResponse("이름없음" + i, "서울 어딘가 " + i));
         }
 
         return new RandomTravelResponseDto(items);
+    }
+
+    @GetMapping("/count")
+    public RandomTravelCountResponseDto fetchRandomTravelCountResponseDto() {
+        return new RandomTravelCountResponseDto(1000);
+    }
+
+    private Integer getPage(Integer page) {
+        if (page == null || page < 1) {
+            return 1;
+        }
+        return page;
     }
 }

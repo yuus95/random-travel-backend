@@ -35,7 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
 
         if (authorizationHeader != null) {
-            if (authorizationHeader.startsWith("Bearer ")) {
+            if (!authorizationHeader.startsWith("Bearer ")) {
                 throw new CustomAuthenticationException("Missing or invalid Authorization header");
             }
             jwt = authorizationHeader.substring(7);
