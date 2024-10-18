@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/random-travel/login").permitAll()
                                 .requestMatchers("/random-travel/signup").permitAll()
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/random-travel/**").authenticated());
 
                 httpSecurity.exceptionHandling(exception ->
